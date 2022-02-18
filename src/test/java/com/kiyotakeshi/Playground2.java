@@ -61,45 +61,6 @@ public class Playground2 {
     }
 
     @Test
-    void reduce2() {
-        System.out.println(
-                numbers.stream()
-                        .map(x -> x * x) // return Stream<R>
-                        .reduce(0, Integer::sum)
-        );
-    }
-
-    @Test
-    void reduce3() {
-        System.out.println(
-                numbers.stream()
-                        .filter(x -> x % 2 == 0) // return Stream<T>
-                        .reduce(0, Integer::sum) // return T(not Stream, generics for specific type)
-        );
-    }
-
-    @Test
-    void distinctAndSorted() {
-        List<Integer> numbers2 = List.of(13, 4, 4, 7, 23, 1, 8, 4, 5, 7, 23);
-        numbers2.stream()
-                .distinct() // return Stream<T>
-                .sorted() // return Stream<T>
-                .forEach(System.out::println);
-    }
-
-    @Test
-    void sorted() {
-        course.stream()
-                // .sorted(Comparator.naturalOrder())
-                // .sorted(Comparator.reverseOrder())
-                // .sorted(Comparator.comparing(c -> c.length()))
-                .sorted(Comparator.comparing(String::length))
-                // .sorted()
-                .forEach(System.out::println);
-        // .collect(Collectors.toList()); // return R(not Stream, generics for specific type)
-    }
-
-    @Test
     void streamInside() {
         /**
          @FunctionalInterface public interface Predicate<T> {
@@ -165,45 +126,5 @@ public class Playground2 {
                         // .reduce(0, Integer::sum)
                         .reduce(0, getSum)
         );
-    }
-
-    private void filterAndPrint(List<Integer> numbers, Predicate<Integer> predicate) {
-        numbers.stream()
-                .filter(predicate)
-                .forEach(System.out::println);
-    }
-
-    @Test
-    void predicateArgumentMethod() {
-//        Predicate<Integer> evenPredicate = n -> n % 2 == 0;
-//        Predicate<Integer> oddPredicate = n -> n % 2 != 0;
-
-//        numbers.stream()
-//                // .filter(evenPredicate)
-//                .filter(oddPredicate)
-//                .forEach(System.out::println);
-
-        filterAndPrint(numbers, n -> n % 2 == 0);
-        filterAndPrint(numbers, n -> n % 5 == 0);
-    }
-
-    private List<Integer> mapAndCreateNewList(List<Integer> numbers, Function<Integer, Integer> mappingFunction) {
-        return numbers.stream()
-                .map(mappingFunction)
-                .collect(Collectors.toList());
-    }
-
-    @Test
-    void predicateArgumentMethod2() {
-
-//        Function<Integer, Integer> squareFunction = x -> x * x;
-//        List<Integer> collect = numbers.stream()
-//                .map(squareFunction)
-//                .collect(Collectors.toList());
-
-        List<Integer> squareNumbers = mapAndCreateNewList(numbers, x -> x * x);
-        List<Integer> doubledNumbers = mapAndCreateNewList(numbers, x -> x + x);
-        System.out.println(squareNumbers);
-        System.out.println(doubledNumbers);
     }
 }

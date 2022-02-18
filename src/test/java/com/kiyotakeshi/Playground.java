@@ -86,42 +86,6 @@ public class Playground {
     }
 
     @Test
-    void convertHashMap() {
-        List<String> list = Arrays.asList("Taro", "Ichiro", "Saburo", "Mike", "Popcorn", "Yamada", "Kendrick");
-        HashMap<Integer, List<String>> nameLengthMap = new HashMap<>();
-        list.forEach(name -> {
-            int length = name.length();
-            // computeIfAbsent は key が無いときだけ関数が実行される
-            // 空の List を値として与える
-            List<String> valueList = nameLengthMap.computeIfAbsent(length, key -> new ArrayList<>());
-            valueList.add(name);
-
-            // computeIfAbsent を使わない場合
-//            List<String> valueList = nameLengthMap.get(nameLength);
-//            if (valueList == null) {
-//                valueList = new ArrayList<>();
-//                nameLengthMap.put(nameLength, valueList);
-//            }
-//            // 存在する場合は要素を追加
-//            valueList.add(name);
-        });
-        System.out.println(nameLengthMap);
-
-        // 以下の書き方だと同じ文字数のものがあると key が重複してエラーになる
-        // Duplicate key 6 (attempted merging values Ichiro and Saburo)
-        // java.lang.IllegalStateException: Duplicate key 6 (attempted merging values Ichiro and Saburo)
-
-//        System.out.println(nameLengthMap);
-//        Map<Integer, String> collect = list.stream()
-//                .collect(Collectors.toMap(String::length, e -> e));
-
-//        Set<Integer> length = list.stream()
-//                .mapToInt(String::length)
-//                .boxed()
-//                .collect(Collectors.toSet());
-    }
-
-    @Test
     void flatMap() {
         Stream<List<Student>> studentListStream = groups.stream()
                 .map(Group::getStudents);
@@ -129,7 +93,7 @@ public class Playground {
         // [Student(name=popcorn, score=50), Student(name=yamada, score=35)]
         // [Student(name=mike, score=70), Student(name=taro, score=66)]
 
-        // flatMap は stream を結合して1つの stream として扱えるようにする
+        // flatMap は結果を新しい配列内にフラット化する
         // この後は Student に対して処理できる
         Stream<Student> studentStream = groups.stream()
                 .flatMap(g -> g.getStudents().stream());
@@ -151,30 +115,6 @@ public class Playground {
                 .sorted((s1, s2) -> s2.getScore() - s1.getScore())
                 // .sorted(Comparator.comparingInt(Student::getScore).reversed())
                 .forEach(s -> System.out.println(s.getName() + " " + s.getScore()));
-    }
-
-    @Test
-    void distinct() {
-        List<Student> students2 = Arrays.asList(
-                new Student("taro", 78),
-                new Student("taro", 98)
-        );
-        students2.stream()
-                .map(Student::getName)
-                .distinct()
-                .forEach(System.out::println);
-
-        // Set は重複を保持しない
-        students2.stream()
-                .map(Student::getName)
-                .collect(Collectors.toSet())
-                .forEach(System.out::println);
-
-        List<String> list = Arrays.asList("Taro", "Ichiro", "Saburo", "Ichiro");
-        Set<String> set = list.stream()
-                .filter(e -> e.length() > 5)
-                .collect(Collectors.toSet());
-        System.out.println(set);
     }
 
     @Test

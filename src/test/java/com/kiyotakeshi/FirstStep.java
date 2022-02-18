@@ -41,17 +41,6 @@ public class FirstStep {
     @Test
     @DisplayName("宣言的な書き方")
     void declarativeApproach() throws IOException {
-        // set up(arrange)
-        List<Person> persons = SampleData.getPersons();
-        List<Person> youngPeople = persons.stream()
-                .filter(p -> p.getAge() <= 20)
-                .limit(5)
-                .collect(Collectors.toList());
 
-        // exercise(act)
-        youngPeople.forEach(System.out::println);
-
-        // verify(assert)
-        assertThat(youngPeople.size()).isEqualTo(5);
     }
 }
